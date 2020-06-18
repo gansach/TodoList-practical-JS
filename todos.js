@@ -1,6 +1,6 @@
 let todoList = {
   todos : [],
-  displayTodos : function () {
+  displayTodos : function () { 
     let length = this.todos.length; 
         
     if (length === 0) {
@@ -62,13 +62,22 @@ let todoList = {
   }
 };
 
-let displayTodosButton = document.getElementById('displayTodosButton');
-let toggleAllButton = document.getElementById('toggleAllButton');
+let handlers = {
+  displayTodos : () => todoList.displayTodos(),
+  
+  toggleAll : () => todoList.toggleAll(),
+  
+  addTodo : () => {
+    let addTodoTextInput = document.getElementById('addTodoTextInput');
+    todoList.addTodo(addTodoTextInput.value);
+    addTodoTextInput.value = '';
+  },
 
-displayTodosButton.addEventListener('click', function() {
-  todoList.displayTodos();
-});
-
-toggleAllButton.addEventListener('click', function() {
-  todoList.toggleAll();
-});
+  changeTodo : () => {
+    let changeTodoPositionInput = document.getElementById('changeTodoPositionInput');
+    let changeTodoTextInput = document.getElementById('changeTodoTextInput');
+    todoList.changeTodo(changeTodoPositionInput.valueAsNumber, changeTodoTextInput.value);
+    changeTodoPositionInput.value = '';
+    changeTodoTextInput.value = '';
+  }
+};

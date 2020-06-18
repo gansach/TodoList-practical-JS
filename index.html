@@ -1,13 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>Practical JS</title>
-    </head>
-    <body>
-        <h1>Todo List</h1>
-        <button id="displayTodosButton">Display Todos</button>
-        <button id="toggleAllButton">Toggle All</button>
+  <head>
+    <title>Practical JS</title>
+  </head>
+  <body>
+    <h1>Todo List</h1>
+    
+    <div>
+      <button onclick="handlers.displayTodos()">Display Todos</button>
+      <button onclick="handlers.toggleAll()">Toggle All</button>
+    </div>
 
-        <script src="todos.js"></script>
-    </body>
+    <div>
+      <button onclick="handlers.addTodo()">Add</button>
+      <input id="addTodoTextInput" type="text">
+    </div>
+
+    <div>
+      <button onclick="handlers.changeTodo()">Change Todo</button>
+      <input id="changeTodoPositionInput" type="number">
+      <input id="changeTodoTextInput" type="text"> 
+    </div>
+
+    <script src="todos.js"></script>
+  </body>
 </html>
