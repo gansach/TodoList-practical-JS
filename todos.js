@@ -60,10 +60,8 @@ let handlers = {
     view.displayTodos();
   },
 
-  toggleCompleted : function() {
-    let toggleCompletedPositionInput = document.getElementById('toggleCompletedPositionInput');
-    todoList.toggleCompleted(toggleCompletedPositionInput.valueAsNumber);
-    toggleCompletedPositionInput.value = '';
+  toggleCompleted : function(position) {
+    todoList.toggleCompleted(position);
     view.displayTodos();
   },
 
@@ -89,6 +87,7 @@ let view = {
       }
       todosLi.id = position;
       todosLi.textContent = todoTextWithCompletion;
+      todosLi.appendChild(this.createToggleButton());
       todosLi.appendChild(this.createDeleteButton());
       todosUl.appendChild(todosLi);
     }, this);
@@ -100,6 +99,14 @@ let view = {
     deleteButton.className = 'deleteButton';
     return deleteButton;
   },
+
+  createToggleButton : function () {
+    let toggleButton = document.createElement('button');
+    toggleButton.textContent = 'Toggle';
+    toggleButton.className = 'toggleButton';
+    return toggleButton;
+  },
+
   setUpEventListeners : function() {
     let todosUL = document.querySelector('ul');
     todosUL.addEventListener('click', function(event) {
@@ -110,6 +117,8 @@ let view = {
       // Check if elementClicked is a delete button.
       if (elementClicked.className == 'deleteButton') {
         handlers.deleteTodo(parseInt(elementClicked.parentNode.id));
+      } else if (elementClicked.className = 'toggleButton') {
+        handlers.toggleCompleted(parseInt(elementClicked.parentNode.id));
       }
     });
   }
