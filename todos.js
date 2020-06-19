@@ -20,24 +20,21 @@ let todoList = {
     let totalTodos = this.todos.length;
     let completedTodos = 0;
 
-    // Get number of total todos
-    for (let i = 0; i < totalTodos; i++) {
-      if (this.todos[i].completed) {
+    this.todos.forEach(function(todo) {
+      if (todo.completed) {
         completedTodos++;
       }
-    }
+    });
 
-    // Case 1: If everything's true, make everything false.
-    if (completedTodos === totalTodos) {
-      for (let i = 0; i < totalTodos; i++) {
-        this.todos[i].completed = false;
+    this.todos.forEach(function(todo) {
+      // Case 1: If everything's true, make everything false.
+      if (totalTodos == completedTodos) {
+        todo.completed = false;
+      // Case 2: Otherwise, make everything true.
+      } else {
+        todo.completed = true;
       }
-    // Case 2: Otherwise, make everything true.
-    } else {
-      for (let i = 0; i < totalTodos; i++) {
-        this.todos[i].completed = true;
-      }
-    }
+    });
   }
 };
 
@@ -81,10 +78,8 @@ let view = {
     let todosUl = document.querySelector('ul');
     todosUl.innerHTML = '';
     
-    let length = todoList.todos.length;
-    for (let i = 0; i < length; i++) {
+    todoList.todos.forEach(function(todo, position) {
       let todosLi = document.createElement('li');
-      let todo = todoList.todos[i];
       let todoTextWithCompletion = '';
       
       if (todo.completed) {
@@ -92,12 +87,12 @@ let view = {
       } else {
         todoTextWithCompletion = '( ) ' + todo.todoText;
       }
-
-      todosLi.id = i;
+      todosLi.id = position;
       todosLi.textContent = todoTextWithCompletion;
       todosLi.appendChild(this.createDeleteButton());
       todosUl.appendChild(todosLi);
-    }
+    }, this);
+
   },
   createDeleteButton : function() {
     let deleteButton = document.createElement('button');
