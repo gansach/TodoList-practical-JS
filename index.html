@@ -7,7 +7,6 @@
     <h1>Todo List</h1>
     
     <div>
-      <button onclick="handlers.displayTodos()">Display Todos</button>
       <button onclick="handlers.toggleAll()">Toggle All</button>
     </div>
 
@@ -21,6 +20,14 @@
       <input id="changeTodoPositionInput" type="number">
       <input id="changeTodoTextInput" type="text"> 
     </div>
+
+    <div>
+      <button onclick="handlers.toggleCompleted()">Toggle</button>
+      <input id="toggleCompletedPositionInput" type="number">
+    </div>
+
+    <ul>
+    </ul>
 
     <script src="todos.js"></script>
   </body>

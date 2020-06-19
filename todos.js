@@ -1,42 +1,22 @@
 let todoList = {
   todos : [],
-  displayTodos : function () { 
-    let length = this.todos.length; 
-        
-    if (length === 0) {
-      console.log('Your todo list is empty!');
-    } else {
-      console.log('My todos:');
-      for (let i = 0; i < length; i++) {
-        if (this.todos[i].completed) {
-          console.log('(x)', this.todos[i].todoText);          
-        } else {
-          console.log('( )', this.todos[i].todoText);
-        }   
-      }
-    }
-  },
-  addTodo : function (todoText) {
+  addTodo : function(todoText) {
     this.todos.push({
       todoText : todoText,
       completed : false,
-    });
-    this.displayTodos();    
+    });    
   },
-  changeTodo : function (position, todoText) {
+  changeTodo : function(position, todoText) {
     this.todos[position].todoText = todoText;
-    this.displayTodos();
   },
-  deleteTodo : function (position) {
+  deleteTodo : function(position) {
     this.todos.splice(position, 1);
-    this.displayTodos();
   },
-  toggleCompleted : function (position) {
+  toggleCompleted : function(position) {
     let todo = this.todos[position];
     todo.completed = !todo.completed;
-    this.displayTodos();
   },
-  toggleAll : function () {
+  toggleAll : function() {
     let totalTodos = this.todos.length;
     let completedTodos = 0;
 
@@ -58,26 +38,86 @@ let todoList = {
         this.todos[i].completed = true;
       }
     }
-    this.displayTodos();
   }
 };
 
 let handlers = {
-  displayTodos : () => todoList.displayTodos(),
-  
-  toggleAll : () => todoList.toggleAll(),
-  
-  addTodo : () => {
+  addTodo : function() {
     let addTodoTextInput = document.getElementById('addTodoTextInput');
     todoList.addTodo(addTodoTextInput.value);
     addTodoTextInput.value = '';
+    view.displayTodos();
   },
 
-  changeTodo : () => {
+  changeTodo : function() {
     let changeTodoPositionInput = document.getElementById('changeTodoPositionInput');
     let changeTodoTextInput = document.getElementById('changeTodoTextInput');
     todoList.changeTodo(changeTodoPositionInput.valueAsNumber, changeTodoTextInput.value);
     changeTodoPositionInput.value = '';
     changeTodoTextInput.value = '';
+    view.displayTodos();
+  },
+
+  deleteTodo : function(position) {
+    todoList.deleteTodo(position);
+    view.displayTodos();
+  },
+
+  toggleCompleted : function() {
+    let toggleCompletedPositionInput = document.getElementById('toggleCompletedPositionInput');
+    todoList.toggleCompleted(toggleCompletedPositionInput.valueAsNumber);
+    toggleCompletedPositionInput.value = '';
+    view.displayTodos();
+  },
+
+  toggleAll : function() {
+    todoList.toggleAll()
+    view.displayTodos();
   }
 };
+
+let view = {
+  displayTodos: function() {
+    let todosUl = document.querySelector('ul');
+    todosUl.innerHTML = '';
+    
+    let length = todoList.todos.length;
+    for (let i = 0; i < length; i++) {
+      let todosLi = document.createElement('li');
+      let todo = todoList.todos[i];
+      let todoTextWithCompletion = '';
+      
+      if (todo.completed) {
+        todoTextWithCompletion = '(x) ' + todo.todoText;
+      } else {
+        todoTextWithCompletion = '( ) ' + todo.todoText;
+      }
+
+      todosLi.id = i;
+      todosLi.textContent = todoTextWithCompletion;
+      todosLi.appendChild(this.createDeleteButton());
+      todosUl.appendChild(todosLi);
+    }
+  },
+  createDeleteButton : function() {
+    let deleteButton = document.createElement('button');
+    deleteButton.textContent = 'Delete';
+    deleteButton.className = 'deleteButton';
+    return deleteButton;
+  },
+  setUpEventListeners : function() {
+    let todosUL = document.querySelector('ul');
+    todosUL.addEventListener('click', function(event) {
+
+      // Get element that was clicked on.
+      let elementClicked = event.target;
+
+      // Check if elementClicked is a delete button.
+      if (elementClicked.className == 'deleteButton') {
+        handlers.deleteTodo(parseInt(elementClicked.parentNode.id));
+      }
+    });
+  }
+};
+
+document.addEventListener('DOMContentLoaded', view.setUpEventListeners());
